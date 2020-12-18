@@ -102,11 +102,14 @@
 
                                         <td>{{ $post->Created_by }}</td>
                                         <td>
+                                            @can('تعديل مقالة')
                                             <button class="btn btn-outline-success btn-sm" data-post="{{ $post->id }}"
                                                 data-toggle="modal" data-target="#edit_Product">تعديل</button>
-
+                                                @endcan
+                                                @can('حذف مقالة')
                                             <button class="btn btn-outline-danger btn-sm " data-post="{{ $post->id }}"
                                                 data-toggle="modal" data-target="#modaldemo9">حذف</button>
+                                                @endcan
                                         </td>
                                     </tr>
 
@@ -126,17 +129,21 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form action="update_post" method="post">
+                            <form action="{{url('update_post')}}/{{$post->id}}" method="post">
 
                                 {{ csrf_field() }}
                                 <div class="modal-body">
-
+                                    <div class="modal-body">
+                                        
+                                        <input type="hidden" name="id" id="id" value="">
+                                    </div>
                                     <div class="form-group">
+                                   
                                         <label for="title"> عنوان المقال :</label>
 
                                         <input type="text" class="form-control" name="title" id="title" value="">
 
-                                        <input type="hidden" name="id" id="id" value="">
+                                        
 
                                     </div>
 

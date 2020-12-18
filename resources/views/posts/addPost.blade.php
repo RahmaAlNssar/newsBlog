@@ -106,11 +106,13 @@
                             <br>
 
                             <div class="col-sm-12 col-md-12">
+                                {{-- @can('رفع صورة') --}}
                                 <input type="file" name="pic" class="dropify" accept=".jpg, .png, image/jpeg, image/png"
                                     data-height="70" />
+                                {{-- @endcan     --}}
                             </div><br>
-
-                            <div class="d-flex justify-content-center">
+                          
+                               
                                 <button type="submit" class="btn btn-primary">حفظ البيانات</button>
                             </div>
 
@@ -153,6 +155,5 @@
     <script src="{{ URL::asset('assets/plugins/select2/js/select2.min.js') }}"></script>
     <!-- Internal Modal js-->
     <script src="{{ URL::asset('assets/js/modal.js') }}"></script>
-
-
+  
 @endsection

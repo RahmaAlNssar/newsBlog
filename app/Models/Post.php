@@ -23,7 +23,8 @@ class Post extends Model implements HasMedia
         return $this->belongsTo('App\Models\Category','cat_id');
     }
 
-    public function MediaUrl(){
-        return $this->belongsTo('App\Models\Media','image_url');
+    public function getImageAttribute()
+    {
+        return $this->getMedia('images')->last();
     }
 }

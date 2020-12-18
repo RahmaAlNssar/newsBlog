@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use App\Models\socialMediaNews;
+use App\Models\Media;
 class PostController extends Controller
 {
     public function index(){
@@ -44,8 +46,10 @@ class PostController extends Controller
             'Created_by'=>(Auth::user()->name)
            
         ]);
-        
-       $image=$post->addMedia($file)->toMediaCollection('images');
+        $post->addMedia($file)
+        ->preservingOriginal()
+        ->toMediaCollection('images');
+      // $image=$post->addMedia($file)->toMediaCollection('images');
     
         
        }
@@ -54,7 +58,7 @@ class PostController extends Controller
 
     public function show(Request $request){
         $posts=Post::all();
-        // dd($posts);
+      
         return view('front.news',compact('posts'));
     }
     public function Edit(Request $request){
@@ -62,12 +66,12 @@ class PostController extends Controller
         return view('posts.showPosts',compact('posts'));
     }
 
-    public function update(Request $request){
-        $id=$request->id;
-        $posts=Post::where('id',$id)->update($request->except(['_token']));
+    public function update(Request $request,$id){
+       
+        $posts=Post::where('id',$id)->update($request->except(['_token','id']));
 
         session()->flash('Edit', 'تم تعديل المقال بنجاح');
-        return back();
+        return redirect()->back();
        
     }
     public function destroy(Request $request,$id){
@@ -79,11 +83,36 @@ class PostController extends Controller
     public function getId(Request $request){
         $id=$request->id;
         $post=Post::where('id',$id)->first();
-          return view('posts.showPosts',compact('post')); 
+        $media=Media::first();
+          return view('posts.showPosts',compact('post','media')); 
       }
     public function displayPosts($id){
         $post=Post::where('id',$id)->first();
         return view('front.posts.content',compact('post')); 
     }
- 
+   
+    public function dataFace(){
+        return view('front.news');
+    }
+
+    public function get_links_from_socialMedia(){
+        return view('facebook.socialMedia');
+    }
+
+    public function store_links_from_socialMedia(Request $request){
+        $data = [
+          'post_link' => $request->post_link
+        ];
+
+        $post = socialMediaNews::create($data);
+        return redirect()->route('postMedia.get');
+    }
+
+    public function fetch_links(){
+        $links = socialMediaNews::select('post_link')->get();
+        return response()->json([
+            'message' => 'Done!',
+            'data' => $links
+        ]);
+    }
 }
