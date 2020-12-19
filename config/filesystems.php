@@ -55,18 +55,13 @@ return [
         //     'visibility' => 'public',
         // ],
 
-        // 'public' => [
-        //     'driver' => 'local',
-        //     'root' => public_path('uploads/'),
-        //     'url' => env('APP_URL').'/uploads',
-        //     'visibility' => 'public',
-        // ],
-        'media' => [
+        'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/upload'),
-            'url' => env('APP_URL').'/storage/app/public/upload',
+            'root' => public_path('uploads/'),
+            'url' => env('APP_URL').'/uploads',
             'visibility' => 'public',
         ],
+      
 
         's3' => [
             'driver' => 's3',

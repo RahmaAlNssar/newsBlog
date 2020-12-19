@@ -61,31 +61,40 @@ class PostController extends Controller
       
         return view('front.news',compact('posts'));
     }
-    public function Edit(Request $request){
-        $posts=Post::get();
+
+    public function Edit(){
+        $posts=Post::all();
+        
+
         return view('posts.showPosts',compact('posts'));
     }
 
     public function update(Request $request,$id){
-       
-        $posts=Post::where('id',$id)->update($request->except(['_token','id']));
-
+     
+     $post=Post::find($id);
+     if(!$post){
+        session()->flash('Error', ' عذرا المقال غير موجود');
+      
+        return back();
+     }
+      $post->update([
+        'title'=>$request->title,
+        'content'=>$request->content,
+      ]);
         session()->flash('Edit', 'تم تعديل المقال بنجاح');
-        return redirect()->back();
-       
+      
+      return back(); 
     }
     public function destroy(Request $request,$id){
-        $posts=Post::where('id',$id)->delete();
-        return redirect()->back()->with(['delete' => '   تم حذف العنصر بنجاح     ']);
-
+        
+       $post=Post::findOrFail($id)->first();
+       $post->delete();
+     
+        session()->flash('delete', 'تم حذف المقال بنجاح');
+        return back();
+   
     }
 
-    public function getId(Request $request){
-        $id=$request->id;
-        $post=Post::where('id',$id)->first();
-        $media=Media::first();
-          return view('posts.showPosts',compact('post','media')); 
-      }
     public function displayPosts($id){
         $post=Post::where('id',$id)->first();
         return view('front.posts.content',compact('post')); 
@@ -100,11 +109,17 @@ class PostController extends Controller
     }
 
     public function store_links_from_socialMedia(Request $request){
+        $validator=Validator::make($request->all(),['post_link'=>'required']);
+        if($validator->fails()){
+            session()->flash('Error', 'عذرا يرجى ادخال الرابط');
+            return redirect()->route('postMedia.get');
+        }
         $data = [
           'post_link' => $request->post_link
         ];
 
         $post = socialMediaNews::create($data);
+        session()->flash('Add', 'تم تخزين البوست بنجاح');
         return redirect()->route('postMedia.get');
     }
 

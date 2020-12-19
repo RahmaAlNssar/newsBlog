@@ -26,7 +26,7 @@
                     <div class="col-md-12 mb-5">
                         <h4 class="text-success my-4 font-weight-bold">{{ $post->title }}</h4>
                        
-                        <img style="width:500 ; height:300 ;" src="http://localhost:8000/storage/app/public/upload/order_column/file_name">
+                        <img style="width:500 ; height:300 ;" src="{{asset('uploads/order_column/'.$post->file_name)}}">
                         <p class="mt-5"> {{ $post->content }}</p>
                     </div>
 

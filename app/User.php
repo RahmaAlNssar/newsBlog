@@ -20,6 +20,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name', 'email', 'password','Status','roles_name'
     ];
+    
+    protected static $ignoreChangedAttributes = ['created_by'];
     protected static $logAttributes = ['name', 'email','password'];
     protected static $recordEvents = ['deleted','created','updated'];
     protected static $logName = 'User';
@@ -27,6 +29,7 @@ class User extends Authenticatable
     {
         return "This User has been {$eventName}";
     }
+   
 
     /**
      * The attributes that should be hidden for arrays.

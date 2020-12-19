@@ -23,18 +23,24 @@
     </div>
    
     <div class="row mt-1" style="background: rgba(238, 238, 238, 0.74);">
-
-        <div class="col-md-8 pt-3">
+        @if(count($posts)==0)
+        <div>لا يوجد مقالات</div>
+  @endif
+<br>
+  @if(count($posts)>0)
+       <div class="col-md-8 pt-3">
             <div class="row">
+          
                 <div class="col-md-12 mb-5">
-                <h4 class="text-success my-4 font-weight-bold">{{App\Models\Post::latest()->first()->title}}</h4>
+                <h4 class="text-success my-4 font-weight-bold">{{App\Models\Post::latest()->first()->title}}</h4> --}}
                     <img src="{{App\Models\Post::latest()->first()->image}}" class="img-fluid" alt="">
                    
-                    <p class="mt-5">{{App\Models\Post::latest()->first()->content}}</p>
+                  <p class="mt-5">{{App\Models\Post::latest()->first()->content}}</p>
                 </div>
         
             </div>
         </div>
+    @endif    
         <div class="col-md-4 ">
             <div class="list-Latest-news-title mr-0 my-3">
                 <a href="" class="text-white">أخر الاخبار</a>

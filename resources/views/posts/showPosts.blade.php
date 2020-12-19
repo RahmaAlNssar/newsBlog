@@ -70,7 +70,15 @@
             </button>
         </div>
     @endif
+  
+      
+
     <!-- row -->
+  @if(count($posts)==0)
+        <h2>لا يوجد مقالات</h2>
+  @endif
+
+  @if(count($posts)>0)
     <div class="row">
         <div class="col-xl-12">
             <div class="card mg-b-20">
@@ -103,11 +111,13 @@
                                         <td>{{ $post->Created_by }}</td>
                                         <td>
                                             @can('تعديل مقالة')
-                                            <button class="btn btn-outline-success btn-sm" data-post="{{ $post->id }}"
+                                            <button class="btn btn-outline-success btn-sm" data-id="{{ $post->id }}"
+                                                
                                                 data-toggle="modal" data-target="#edit_Product">تعديل</button>
                                                 @endcan
                                                 @can('حذف مقالة')
-                                            <button class="btn btn-outline-danger btn-sm " data-post="{{ $post->id }}"
+                                            <button class="btn btn-outline-danger btn-sm " data-id="{{ $post->id }}"
+                                                
                                                 data-toggle="modal" data-target="#modaldemo9">حذف</button>
                                                 @endcan
                                         </td>
@@ -129,13 +139,14 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <form action="{{url('update_post')}}/{{$post->id}}" method="post">
 
+                        <form action="{{route('update_post',$post->id)}}" method="post">
+                               
                                 {{ csrf_field() }}
                                 <div class="modal-body">
                                     <div class="modal-body">
                                         
-                                        <input type="hidden" name="id" id="id" value="">
+                                        <input type="hidden" name="id" id="id" >
                                     </div>
                                     <div class="form-group">
                                    
@@ -178,13 +189,13 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
 
-                            <form action="{{url('delete_post')}}/{{$post->id}}" method="post">
+                            <form action="{{route('delete_post',$post->id)}}" method="post">
 
                                     {{ csrf_field() }}
                             </div>
                             <div class="modal-body">
                                 هل انت متاكد من عملية الحذف ؟
-                                <input type="hidden" name="id" id="id" value="">
+                                <input type="hidden" name="id" id="id">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>
@@ -195,16 +206,22 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
 
+     </div>
     </div>
-    </div>
-    </div>
+    </div> 
     <!-- row closed -->
     </div>
     <!-- Container closed -->
     </div>
     <!-- main-content closed -->
+
+    
+@endif
+       
+
+ 
 @endsection
 @section('js')
     <!-- Internal Data tables -->
@@ -234,28 +251,28 @@
     <script src="{{ URL::asset('assets/plugins/select2/js/select2.min.js') }}"></script>
     <!-- Internal Modal js-->
     <script src="{{ URL::asset('assets/js/modal.js') }}"></script>
-    <script>
+    {{-- <script>
         //edit
         $('#edit_Product').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget)
 
-            var post = button.data('post')
-
-
+            var id = button.data('id')
+           
+            
             var modal = $(this)
-            modal.find('.modal-body #post').val(post);
-
+            modal.find('.modal-body #id').val(id);
+           
         })
         //delete
         $('#modaldemo9').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget)
-            var post = button.data('post')
+            var id = button.data('id')
 
             var modal = $(this)
-            modal.find('.modal-body #post').val(post);
-
+            modal.find('.modal-body #id').val(id);
+           
         })
 
-    </script>
+    </script> --}}
 
 @endsection
